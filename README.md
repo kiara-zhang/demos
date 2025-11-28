@@ -1,10 +1,14 @@
-# DL-Guided Cross-Species Gene Sequence Optimization (a demo)
+# DL-Guided Cross-Species Gene Sequence Optimization (a VERY NAIVE demo)
 
 > *In-silico horizontal gene transfer*
 
 ![align1](/img/align_pr1.png)
 
-This project was developed as the dry-lab component of my iGEM team’s synthetic biology project. While entirely illustrative in nature (and independent of our wet-lab experiments, where plasmids for actual biotransformation are transferred across two bacterial species), the primary aim is to deepen my understanding of computational biology. I personally find the field extremely fascinating, and over the past few weeks, the whole process of designing the pipeline, researching algorithms, and implementing (plus so much debugging...) the code has been both rewarding and incredibly fun.
+**This is essentially just an extremely naive demo I played around with before starting uni to get familiarised with the field.**
+
+---
+
+The project was originally developed as the dry-lab component of my high school iGEM team’s synthetic biology project. While entirely illustrative in nature (and independent of our wet-lab experiments, where plasmids for actual biotransformation are transferred across two bacterial species), the primary aim is to deepen my understanding of computational biology. I personally find the field extremely fascinating, and over the past few weeks, the whole process of designing the pipeline, researching algorithms, and implementing (plus so much debugging) the code has been both rewarding and incredibly fun.
 
 The central idea behind the pipeline is that the base model (in this case [Evo-1](https://github.com/evo-design/evo/)) captures general *prokaryotic* genomic patterns, while fine-tuning on the target host species' DNA corpus enables it to learn host-specific contextual information. This, in turn, helps reveal how 'host-like' a candidate sequence is, thereby guiding sequence optimization. This 'mutagenesis' step is carried out via an iterative, directed-evolution–like MH-MCMC sampling procedure, which recursively proposes point mutations on the current sequence while rejecting nonsense mutations and protecting the enzyme's active site from non-synonymous substitutions. Finally, optimized sequences are evaluated by calculating CAI and GC content to assess host compatibility, and by performing structural predictions to visualize the structures of the new proteins (via PyMol) and compute further metrics (pLDDTs and scores for alignment with reference sequence).
 
@@ -17,9 +21,9 @@ Reference: Ruffolo, J.A., Madani, A. Designing proteins with language models. Na
 
 ## The search for a better sequence...
 
-Trying to balance exploration and exploitation, and avoid enumerating by brute force...
+Trying to balance exploration and exploitation, and avoid enumerating by brute force.
 
-**Gradient-based sensitivity analysis**: by calculating the gradient of the model's loss w.r.t. each position on the current sequence, we can identify the nucleotides *where* mutations would most significantly impact the 'host-likeness' score (a small nudge can lead to greater changes). Rather than mutating positions randomly..., we leverage the model's knowledge to guide the search!
+**Gradient-based sensitivity analysis**: by calculating the gradient of the model's loss w.r.t. each position on the current sequence, we can identify the nucleotides *where* mutations would most significantly impact the 'host-likeness' score (a small nudge can lead to greater changes). Rather than mutating positions randomly..., we leverage the model's knowledge to guide the search.
 
 (*Note that this idea isn't applicable with Evo-1 since its StripedHyena architecture doesn't support `inputs_embeds` *(input embeddings are needed since gradients can only flow through continuous tensors rather than discrete ids)* as a kwarg in the `forward()` method... Tried a few workarounds but didn't work as well (so sad). However, a demo of running this check via [Nucleotide Transformer](https://github.com/instadeepai/nucleotide-transformer) (which does support that kwarg; however, due to its way of tokenization, the performance of the analysis is very poor...) can be seen in the notebook. For Evo-1, we'll just randomly propose positions to mutate...*)
 
@@ -29,9 +33,9 @@ Trying to balance exploration and exploitation, and avoid enumerating by brute f
 
 ## Limitations of this computational pipeline
 
-*(just a demo to play around!)*
+(just a naive demo to play around)
 
-1. **The greatest one, identified only after running the whole thing - insignificant actual improvement on the metrics.** Sad. 
+1. The greatest one, identified only after running the whole thing - insignificant actual improvement on the metrics. Sad. 
 
 2. Absence of wet-lab validation. The optimized sequence is very likely to fail when synthesized and expressed *in vivo*.
 
