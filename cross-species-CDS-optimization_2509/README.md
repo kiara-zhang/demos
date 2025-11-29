@@ -2,7 +2,7 @@
 
 > *In-silico horizontal gene transfer*
 
-![align1](/img/align_pr1.png)
+![align1](./img/align_pr1.png)
 
 **This is essentially just an extremely naive demo I played around with before starting uni to get familiarised with the field.**
 
@@ -13,7 +13,7 @@ The project was initially developed as the dry-lab component of my high school i
 The central idea behind the pipeline is that the base model (in this case [Evo-1](https://github.com/evo-design/evo/)) captures general *prokaryotic* genomic patterns, while fine-tuning on the target host species' DNA corpus enables it to learn host-specific contextual information. This, in turn, helps reveal how 'host-like' a candidate sequence is, thereby guiding sequence optimization. This 'mutagenesis' step is carried out via an iterative, directed-evolution–like MH-MCMC sampling procedure, which recursively proposes point mutations on the current sequence while rejecting nonsense mutations and protecting the enzyme's active site from non-synonymous substitutions. Finally, optimized sequences are evaluated by calculating CAI and GC content to assess host compatibility, and by performing structural predictions to visualize the structures of the new proteins (via PyMol) and compute further metrics (pLDDTs and scores for alignment with reference sequence).
 
 
-![Sequence optimization with MCMC sampling](/img/seqMCMCsampling.png)
+![Sequence optimization with MCMC sampling](./img/seqMCMCsampling.png)
 
 Reference: Ruffolo, J.A., Madani, A. Designing proteins with language models. Nat Biotechnol 42, 200–202 (2024). https://doi.org/10.1038/s41587-024-02123-4 *(for the figure above; 'optimizing sequences through Markov chain Monte Carlo sampling with an LM')*
 
